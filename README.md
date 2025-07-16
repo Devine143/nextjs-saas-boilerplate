@@ -64,53 +64,40 @@ git push -u origin main
 - Node.js 18+ 
 - npm, yarn, or pnpm
 
-### After Creating Your Repository
+### Installation Steps
 
-1. Clone your new repository:
+1. **Clone your new repository:**
 ```bash
 git clone https://github.com/yourusername/your-new-repo.git
 cd your-new-repo
 ```
 
-2. Install dependencies:
+2. **Install dependencies (choose one):**
+
+#### Using npm:
 ```bash
 npm install
-# or
-yarn install
-# or
-pnpm install
+npm run setup
 ```
 
-3. **Run the setup script** (this installs shadcn/ui components):
+#### Using Yarn:
 ```bash
-npm run setup
-# or
+yarn install
 yarn setup
-# or
+```
+
+#### Using pnpm:
+```bash
+pnpm install
 pnpm setup
 ```
 
-> **Note:** The setup script will install all required shadcn/ui components and create your `.env.local` file.
+> **Important:** The setup script will:
+> - Install all required shadcn/ui components
+> - Create your `.env.local` file
+> - Clear any build cache
 
-### Alternative: Manual Setup
-
-If you prefer to set up manually or the script fails:
-
-```bash
-# Install shadcn/ui components one by one
-npx shadcn-ui@latest init
-npx shadcn-ui@latest add button card input label form sheet dropdown-menu navigation-menu dialog avatar
-
-# Copy environment variables
-cp .env.local.example .env.local
-```
-
-4. **Clean the build cache** (important for first run):
-```bash
-rm -rf .next
-```
-
-5. Run the development server:
+3. **Start the development server:**
 ```bash
 npm run dev
 # or
@@ -119,7 +106,28 @@ yarn dev
 pnpm dev
 ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. **Open [http://localhost:3000](http://localhost:3000) in your browser.**
+
+### Alternative: Manual Setup
+
+If the setup script fails, you can set up manually:
+
+```bash
+# 1. Initialize shadcn/ui
+npx shadcn-ui@latest init -y
+
+# 2. Install components
+npx shadcn-ui@latest add button card input label form sheet dropdown-menu navigation-menu dialog avatar --overwrite
+
+# 3. Copy environment variables
+cp .env.local.example .env.local
+
+# 4. Clear cache
+rm -rf .next node_modules/.cache
+
+# 5. Start dev server
+npm run dev
+```
 
 ## 🏗️ Project Structure
 
@@ -160,6 +168,96 @@ src/
 - Works even if CSS variables are not loaded
 - Example: `background: "hsl(var(--background, 0 0% 100%))"`
 
+## 🚨 Common Issues & Solutions
+
+### Installation Issues
+
+#### Yarn: "Can't resolve 'tailwindcss'"
+If you're using Yarn and encounter module resolution errors:
+
+1. **Delete lock files and node_modules:**
+```bash
+rm -rf node_modules yarn.lock package-lock.json
+```
+
+2. **Clear Yarn cache:**
+```bash
+yarn cache clean
+```
+
+3. **Reinstall with Yarn 1.x:**
+```bash
+yarn install --network-timeout 100000
+yarn setup
+```
+
+#### npm: Installation hanging
+If npm install hangs:
+
+```bash
+# Clear npm cache
+npm cache clean --force
+
+# Install with legacy peer deps
+npm install --legacy-peer-deps
+npm run setup
+```
+
+#### pnpm: Peer dependency issues
+```bash
+# Install with shamefully-hoist
+pnpm install --shamefully-hoist
+pnpm setup
+```
+
+### Development Issues
+
+#### Module not found: Can't resolve '@/components/ui/...'
+```bash
+# The shadcn/ui components need to be installed
+npm run setup
+```
+
+#### Tailwind CSS IntelliSense not working
+1. Restart VS Code/Cursor
+2. Check that Tailwind CSS extension is installed
+3. Reload the window: `Cmd/Ctrl + Shift + P` → "Reload Window"
+
+#### CSS not loading properly
+```bash
+# Clear all caches
+rm -rf .next node_modules/.cache
+npm run dev
+```
+
+#### "use client" directive errors
+- Ensure all interactive components have `"use client"` at the top
+- Server components (like `layout.tsx`) should NOT have `"use client"`
+- Check that `RootClientLayout` is properly wrapping client functionality
+
+### Platform-Specific Issues
+
+#### Windows: PowerShell execution policy
+```powershell
+# Run as Administrator
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+#### macOS: Permission denied
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+#### Linux: EACCES errors
+```bash
+# Fix npm permissions
+mkdir ~/.npm-global
+npm config set prefix '~/.npm-global'
+echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+
 ## 🎨 First Steps After Using Template
 
 1. **Update Branding**
@@ -199,53 +297,6 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 # Add your API keys and secrets here
 # Database, Auth, Payments, etc.
 ```
-
-## 🚨 Common Issues & Solutions
-
-### Module not found: Can't resolve '@/components/ui/...'
-
-This happens because shadcn/ui components need to be installed after cloning. Run:
-```bash
-npm run setup
-```
-
-### CSS not loading properly
-
-1. Clear Next.js cache:
-```bash
-rm -rf .next
-```
-
-2. Restart the dev server:
-```bash
-npm run dev
-```
-
-### Permission denied when running setup.sh
-
-Make the script executable:
-```bash
-chmod +x setup.sh
-./setup.sh
-```
-
-### Windows users
-
-Use the PowerShell setup script:
-```powershell
-./setup.ps1
-```
-
-Or run the Node.js setup script:
-```bash
-npm run setup
-```
-
-### "use client" directive errors
-
-- Ensure all interactive components have `"use client"` at the top
-- Server components (like `layout.tsx`) should NOT have `"use client"`
-- Check that `RootClientLayout` is properly wrapping client functionality
 
 ## 🚀 Deployment
 
