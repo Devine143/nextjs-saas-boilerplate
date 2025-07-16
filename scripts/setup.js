@@ -27,6 +27,20 @@ function runCommand(command, options = {}) {
   }
 }
 
+function checkDependencies() {
+  const requiredDeps = ['tailwindcss', 'postcss', 'autoprefixer'];
+  const missingDeps = [];
+
+  for (const dep of requiredDeps) {
+    const depPath = path.join(process.cwd(), 'node_modules', dep);
+    if (!fs.existsSync(depPath)) {
+      missingDeps.push(dep);
+    }
+  }
+
+  return missingDeps;
+}
+
 function main() {
   console.log('\n🚀 Setting up Next.js SaaS Boilerplate...\n');
 
@@ -41,6 +55,30 @@ function main() {
   
   log.success(`Node.js ${nodeVersion} detected`);
   console.log('');
+
+  // Check if dependencies are properly installed
+  const missingDeps = checkDependencies();
+  if (missingDeps.length > 0) {
+    log.warn(`Missing dependencies detected: ${missingDeps.join(', ')}`);
+    log.info('Please ensure all dependencies are installed by running:');
+    console.log(`  ${colors.yellow}npm install${colors.reset} or ${colors.yellow}yarn install${colors.reset}`);
+    console.log('');
+  }
+
+  // Initialize shadcn/ui if not already initialized
+  const componentsJson = path.join(process.cwd(), 'components.json');
+  if (!fs.existsSync(componentsJson)) {
+    log.info('Initializing shadcn/ui...');
+    const initSuccess = runCommand('npx shadcn-ui@latest init -y', {
+      stdio: 'pipe'
+    });
+    
+    if (!initSuccess) {
+      log.error('Failed to initialize shadcn/ui. Please run manually:');
+      console.log(`  ${colors.yellow}npx shadcn-ui@latest init${colors.reset}`);
+      process.exit(1);
+    }
+  }
 
   // Install shadcn/ui components
   log.info('🎨 Installing shadcn/ui components...\n');
@@ -63,7 +101,7 @@ function main() {
   for (const component of components) {
     process.stdout.write(`Installing ${component}...`);
     
-    const success = runCommand(`npx shadcn-ui@latest add ${component} --yes`, {
+    const success = runCommand(`npx shadcn-ui@latest add ${component} --yes --overwrite`, {
       stdio: 'pipe'
     });
     
@@ -81,6 +119,8 @@ function main() {
     log.success('All shadcn/ui components installed');
   } else {
     log.warn('Some components failed to install. You may need to install them manually.');
+    log.info('Try running:');
+    console.log(`  ${colors.yellow}npx shadcn-ui@latest add [component-name]${colors.reset}`);
   }
   
   console.log('');
@@ -95,6 +135,14 @@ function main() {
     log.success('Environment file created');
   } else if (fs.existsSync(envLocal)) {
     log.warn('.env.local already exists, skipping...');
+  }
+
+  // Clean Next.js cache
+  const nextDir = path.join(process.cwd(), '.next');
+  if (fs.existsSync(nextDir)) {
+    log.info('🧹 Cleaning Next.js cache...');
+    fs.rmSync(nextDir, { recursive: true, force: true });
+    log.success('Cache cleared');
   }
 
   console.log('');
