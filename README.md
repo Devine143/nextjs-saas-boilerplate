@@ -41,12 +41,13 @@ git push -u origin main
 - ✅ **Dark mode** included
 - ✅ **SEO optimized** structure
 - ✅ **Performance focused** configuration
+- ✅ **Proper server/client component separation**
 
 ## 🚀 Features
 
 - **Next.js 14+** with App Router
 - **TypeScript** for type safety
-- **Tailwind CSS** for rapid styling
+- **Tailwind CSS** for rapid styling with CSS variable fallbacks
 - **shadcn/ui** for beautiful, accessible components
 - **Dark Mode** support with next-themes
 - **Responsive Design** with mobile-first approach
@@ -54,6 +55,7 @@ git push -u origin main
 - **ESLint & Prettier** pre-configured
 - **Git** ready with proper .gitignore
 - **GitHub Actions** CI/CD pipeline
+- **Server/Client component boundaries** properly configured
 
 ## 📦 Quick Start
 
@@ -97,13 +99,18 @@ If you prefer to set up manually or the script fails:
 ```bash
 # Install shadcn/ui components one by one
 npx shadcn-ui@latest init
-npx shadcn-ui@latest add button card input label sheet dropdown-menu navigation-menu dialog avatar
+npx shadcn-ui@latest add button card input label form sheet dropdown-menu navigation-menu dialog avatar
 
 # Copy environment variables
 cp .env.local.example .env.local
 ```
 
-4. Run the development server:
+4. **Clean the build cache** (important for first run):
+```bash
+rm -rf .next
+```
+
+5. Run the development server:
 ```bash
 npm run dev
 # or
@@ -112,7 +119,7 @@ yarn dev
 pnpm dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🏗️ Project Structure
 
@@ -120,12 +127,16 @@ pnpm dev
 src/
 ├── app/                    # Next.js app directory
 │   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout
+│   ├── layout.tsx         # Root layout (Server Component)
 │   ├── page.tsx           # Home page
 │   └── (auth)/            # Auth route group (ready for auth pages)
 ├── components/            # React components
 │   ├── ui/               # shadcn/ui components
-│   ├── layout/           # Layout components (header, footer, nav)
+│   ├── layout/           # Layout components
+│   │   ├── root-client.tsx  # Client wrapper component
+│   │   ├── header.tsx      # Header (Client Component)
+│   │   ├── footer.tsx      # Footer (Client Component)
+│   │   └── navigation.tsx  # Navigation
 │   ├── features/         # Feature-specific components
 │   └── common/           # Shared components
 ├── lib/                  # Utility functions and helpers
@@ -135,6 +146,19 @@ src/
 ├── styles/              # Additional styles
 └── types/               # TypeScript type definitions
 ```
+
+## 🎨 Architecture Decisions
+
+### Server/Client Component Separation
+- **Root Layout** (`layout.tsx`) is a Server Component for SEO metadata
+- **Client functionality** is wrapped in `RootClientLayout` component
+- **All interactive components** have `"use client"` directive
+- **Proper boundaries** ensure optimal performance
+
+### CSS Variables with Fallbacks
+- All Tailwind color utilities have fallback values
+- Works even if CSS variables are not loaded
+- Example: `background: "hsl(var(--background, 0 0% 100%))"`
 
 ## 🎨 First Steps After Using Template
 
@@ -176,13 +200,25 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 # Database, Auth, Payments, etc.
 ```
 
-## 🚨 Common Issues
+## 🚨 Common Issues & Solutions
 
 ### Module not found: Can't resolve '@/components/ui/...'
 
 This happens because shadcn/ui components need to be installed after cloning. Run:
 ```bash
 npm run setup
+```
+
+### CSS not loading properly
+
+1. Clear Next.js cache:
+```bash
+rm -rf .next
+```
+
+2. Restart the dev server:
+```bash
+npm run dev
 ```
 
 ### Permission denied when running setup.sh
@@ -205,6 +241,12 @@ Or run the Node.js setup script:
 npm run setup
 ```
 
+### "use client" directive errors
+
+- Ensure all interactive components have `"use client"` at the top
+- Server components (like `layout.tsx`) should NOT have `"use client"`
+- Check that `RootClientLayout` is properly wrapping client functionality
+
 ## 🚀 Deployment
 
 This boilerplate is ready to deploy on:
@@ -213,6 +255,12 @@ This boilerplate is ready to deploy on:
 - [Netlify](https://netlify.com)
 - [AWS Amplify](https://aws.amazon.com/amplify/)
 - Any platform that supports Next.js
+
+### Deployment Checklist
+- [ ] Update environment variables on your platform
+- [ ] Ensure all dependencies are in `package.json`
+- [ ] Test the build locally: `npm run build`
+- [ ] Verify all components render properly
 
 ## 📄 License
 
@@ -227,6 +275,12 @@ If you'd like to improve this template:
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+### Contribution Guidelines
+- Maintain the server/client component separation
+- Add proper TypeScript types
+- Follow the existing code style
+- Update documentation for new features
 
 ## 💖 Support
 
