@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss"
-import { fontFamily } from "tailwindcss/defaultTheme"
 
 const config = {
   darkMode: ["class"],
@@ -107,7 +106,7 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        sans: ["var(--font-sans, ui-sans-serif)", ...fontFamily.sans],
+        sans: ["var(--font-sans, ui-sans-serif)", "system-ui", "sans-serif"],
       },
     },
   },
