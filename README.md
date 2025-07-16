@@ -79,8 +79,27 @@ yarn install
 pnpm install
 ```
 
-3. Copy the environment variables:
+3. **Run the setup script** (this installs shadcn/ui components):
 ```bash
+npm run setup
+# or
+yarn setup
+# or
+pnpm setup
+```
+
+> **Note:** The setup script will install all required shadcn/ui components and create your `.env.local` file.
+
+### Alternative: Manual Setup
+
+If you prefer to set up manually or the script fails:
+
+```bash
+# Install shadcn/ui components one by one
+npx shadcn-ui@latest init
+npx shadcn-ui@latest add button card input label sheet dropdown-menu navigation-menu dialog avatar
+
+# Copy environment variables
 cp .env.local.example .env.local
 ```
 
@@ -155,6 +174,35 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
 # Add your API keys and secrets here
 # Database, Auth, Payments, etc.
+```
+
+## 🚨 Common Issues
+
+### Module not found: Can't resolve '@/components/ui/...'
+
+This happens because shadcn/ui components need to be installed after cloning. Run:
+```bash
+npm run setup
+```
+
+### Permission denied when running setup.sh
+
+Make the script executable:
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+### Windows users
+
+Use the PowerShell setup script:
+```powershell
+./setup.ps1
+```
+
+Or run the Node.js setup script:
+```bash
+npm run setup
 ```
 
 ## 🚀 Deployment
