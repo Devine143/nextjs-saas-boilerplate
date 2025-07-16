@@ -10,6 +10,7 @@
     "lint:fix": "next lint --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "type-check": "tsc --noEmit",
+    "setup": "node scripts/setup.js",
     "prepare": "husky install"
   },
   "dependencies": {
