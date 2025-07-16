@@ -20,14 +20,14 @@ const config = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "hsl(var(--border, 214.3 31.8% 91.4%))",
+        input: "hsl(var(--input, 214.3 31.8% 91.4%))",
+        ring: "hsl(var(--ring, 221.2 83.2% 53.3%))",
+        background: "hsl(var(--background, 0 0% 100%))",
+        foreground: "hsl(var(--foreground, 222.2 84% 4.9%))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "hsl(var(--primary, 221.2 83.2% 53.3%))",
+          foreground: "hsl(var(--primary-foreground, 210 40% 98%))",
           50: "#eff6ff",
           100: "#dbeafe",
           200: "#bfdbfe",
@@ -41,8 +41,8 @@ const config = {
           950: "#172554",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "hsl(var(--secondary, 210 40% 96.1%))",
+          foreground: "hsl(var(--secondary-foreground, 222.2 47.4% 11.2%))",
           50: "#faf5ff",
           100: "#f3e8ff",
           200: "#e9d5ff",
@@ -56,16 +56,16 @@ const config = {
           950: "#3b0764",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "hsl(var(--destructive, 0 84.2% 60.2%))",
+          foreground: "hsl(var(--destructive-foreground, 210 40% 98%))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "hsl(var(--muted, 210 40% 96.1%))",
+          foreground: "hsl(var(--muted-foreground, 215.4 16.3% 46.9%))",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "hsl(var(--accent, 210 40% 96.1%))",
+          foreground: "hsl(var(--accent-foreground, 222.2 47.4% 11.2%))",
           50: "#ecfdf5",
           100: "#d1fae5",
           200: "#a7f3d0",
@@ -79,18 +79,18 @@ const config = {
           950: "#022c22",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "hsl(var(--popover, 0 0% 100%))",
+          foreground: "hsl(var(--popover-foreground, 222.2 84% 4.9%))",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "hsl(var(--card, 0 0% 100%))",
+          foreground: "hsl(var(--card-foreground, 222.2 84% 4.9%))",
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "var(--radius, 0.5rem)",
+        md: "calc(var(--radius, 0.5rem) - 2px)",
+        sm: "calc(var(--radius, 0.5rem) - 4px)",
       },
       keyframes: {
         "accordion-down": {
@@ -107,7 +107,7 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        sans: ["var(--font-sans, ui-sans-serif)", ...fontFamily.sans],
       },
     },
   },
