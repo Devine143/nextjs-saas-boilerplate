@@ -2,6 +2,21 @@
 
 A production-ready Next.js 14+ SaaS boilerplate with TypeScript, Tailwind CSS, shadcn/ui, and modern best practices.
 
+## 🎉 One-Line Install (Recommended)
+
+```bash
+# Using the install script (works with npm, yarn, or pnpm)
+git clone https://github.com/Devine143/nextjs-saas-boilerplate.git my-app && cd my-app && chmod +x install.sh && ./install.sh
+```
+
+This will automatically:
+- ✅ Detect your package manager
+- ✅ Clean any previous installations
+- ✅ Install all dependencies
+- ✅ Set up shadcn/ui components
+- ✅ Create `.env.local` file
+- ✅ Clear all caches
+
 ## 🚀 Use this Template
 
 This repository is a **template repository**. You can create your own SaaS project from this template:
@@ -72,60 +87,58 @@ git clone https://github.com/yourusername/your-new-repo.git
 cd your-new-repo
 ```
 
-2. **Install dependencies (choose one):**
+2. **Run the install script (Easiest):**
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+Or install manually:
 
 #### Using npm:
 ```bash
-npm install
+npm install --legacy-peer-deps
 npm run setup
+npm run dev
 ```
 
 #### Using Yarn:
 ```bash
-yarn install
+yarn install --network-timeout 100000
 yarn setup
+yarn dev
 ```
 
 #### Using pnpm:
 ```bash
-pnpm install
+pnpm install --shamefully-hoist
 pnpm setup
-```
-
-> **Important:** The setup script will:
-> - Install all required shadcn/ui components
-> - Create your `.env.local` file
-> - Clear any build cache
-
-3. **Start the development server:**
-```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
 ```
 
-4. **Open [http://localhost:3000](http://localhost:3000) in your browser.**
+3. **Open [http://localhost:3000](http://localhost:3000) in your browser.**
 
 ### Alternative: Manual Setup
 
 If the setup script fails, you can set up manually:
 
 ```bash
-# 1. Initialize shadcn/ui
+# 1. Clean everything
+rm -rf node_modules .next yarn.lock package-lock.json pnpm-lock.yaml
+
+# 2. Install dependencies
+npm install --legacy-peer-deps  # or yarn/pnpm
+
+# 3. Initialize shadcn/ui
 npx shadcn-ui@latest init -y
 
-# 2. Install components
+# 4. Install components
 npx shadcn-ui@latest add button card input label form sheet dropdown-menu navigation-menu dialog avatar --overwrite
 
-# 3. Copy environment variables
+# 5. Copy environment variables
 cp .env.local.example .env.local
 
-# 4. Clear cache
-rm -rf .next node_modules/.cache
-
-# 5. Start dev server
+# 6. Start dev server
 npm run dev
 ```
 
@@ -172,56 +185,46 @@ src/
 
 ### Installation Issues
 
-#### Yarn: "Can't resolve 'tailwindcss'"
-If you're using Yarn and encounter module resolution errors:
+#### VSCode/Cursor Tailwind IntelliSense Errors
+The errors you see in the Tailwind CSS extension output are **normal** and don't affect the template functionality. They occur because:
+- The extension looks for Tailwind in specific ways
+- It falls back to its bundled version automatically
+- Your app will still work perfectly
 
-1. **Delete lock files and node_modules:**
-```bash
-rm -rf node_modules yarn.lock package-lock.json
-```
+To minimize these warnings:
+1. Restart VS Code/Cursor after installation
+2. Open Command Palette: `Cmd/Ctrl + Shift + P`
+3. Run "Developer: Reload Window"
 
-2. **Clear Yarn cache:**
+#### Yarn: Module resolution errors
 ```bash
+# Use the install script which handles this automatically
+./install.sh
+
+# Or manually:
+rm -rf node_modules yarn.lock .yarn
 yarn cache clean
-```
-
-3. **Reinstall with Yarn 1.x:**
-```bash
-yarn install --network-timeout 100000
-yarn setup
+yarn install --network-timeout 100000 --ignore-engines
 ```
 
 #### npm: Installation hanging
-If npm install hangs:
-
 ```bash
-# Clear npm cache
 npm cache clean --force
-
-# Install with legacy peer deps
 npm install --legacy-peer-deps
-npm run setup
 ```
 
 #### pnpm: Peer dependency issues
 ```bash
-# Install with shamefully-hoist
 pnpm install --shamefully-hoist
-pnpm setup
 ```
 
 ### Development Issues
 
 #### Module not found: Can't resolve '@/components/ui/...'
 ```bash
-# The shadcn/ui components need to be installed
+# Run the setup script
 npm run setup
 ```
-
-#### Tailwind CSS IntelliSense not working
-1. Restart VS Code/Cursor
-2. Check that Tailwind CSS extension is installed
-3. Reload the window: `Cmd/Ctrl + Shift + P` → "Reload Window"
 
 #### CSS not loading properly
 ```bash
@@ -243,19 +246,9 @@ npm run dev
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-#### macOS: Permission denied
+#### macOS/Linux: Permission denied
 ```bash
-chmod +x setup.sh
-./setup.sh
-```
-
-#### Linux: EACCES errors
-```bash
-# Fix npm permissions
-mkdir ~/.npm-global
-npm config set prefix '~/.npm-global'
-echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
-source ~/.bashrc
+chmod +x install.sh setup.sh
 ```
 
 ## 🎨 First Steps After Using Template
