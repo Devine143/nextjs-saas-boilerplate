@@ -1,0 +1,17 @@
+{
+  "name": "Next.js SaaS Boilerplate",
+  "description": "Production-ready Next.js 14+ SaaS starter with TypeScript, Tailwind CSS, shadcn/ui, authentication ready, and modern best practices",
+  "categories": [
+    "nextjs",
+    "typescript", 
+    "saas",
+    "boilerplate",
+    "tailwindcss",
+    "shadcn-ui",
+    "starter-template"
+  ],
+  "homepage": "https://github.com/Devine143/nextjs-saas-boilerplate",
+  "bugs": {
+    "url": "https://github.com/Devine143/nextjs-saas-boilerplate/issues"
+  }
+}
