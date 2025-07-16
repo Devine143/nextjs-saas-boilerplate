@@ -50,6 +50,7 @@ function main() {
     'card', 
     'input',
     'label',
+    'form',
     'sheet',
     'dropdown-menu',
     'navigation-menu',
